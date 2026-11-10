@@ -1,0 +1,771 @@
+/* ==========================================================================
+   [심플 레트로 Google LIFE Archive 톤앤매너 스타일시트]
+   - 순백색 배경(#ffffff), 작고 선명한 레트로 폰트(12px~13px)
+   - 상단 '류호범'에 커서를 올리면 파란색 'RYU HOBEOM'으로 글자 변환
+   - 상단 목차('작가소개 / 작업 / 연락')에 커서를 올리면 파란색 'About / Works / Contact'로 글자 변환
+   - 목차 하단 빨간 바 제거
+   - '작업' 클릭 시 작업 대표 이미지가 타일 그리드로 나오고, 타일 클릭 시 작업 상세 화면으로 이동
+   ========================================================================== */
+
+:root {
+  --bg-white: #ffffff;           /* 순백색 배경 */
+  --text-black: #000000;         /* 기본 본문 블랙 */
+  --text-gray: #666666;          /* 보조 메타데이터 그레이 (#666) */
+  --text-muted: #888888;         /* 캡션 그레이 */
+  --link-blue: #0000cc;          /* 레트로 아카이브 링크 블루 (#00c) */
+  --life-red: #cc0000;           /* 썸네일 선택 표시 레드 (#c00) */
+  --line-light: #e2e5f0;         /* 은은한 단일 구분선 */
+  --line-header: #cccccc;        /* 상단 헤더 단일 실선 */
+  --font-retro: Arial, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", Dotum, "돋움", sans-serif;
+}
+
+/* ==========================================================================
+   기본 리셋
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 13px;
+}
+
+body {
+  background-color: var(--bg-white);
+  color: var(--text-black);
+  font-family: var(--font-retro);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+img,
+video,
+iframe {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--link-blue);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+ul,
+ol,
+dl {
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-width: 0;
+  empty-cells: show;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ==========================================================================
+   전체 아카이브 컨테이너 (.g-doc 스타일)
+   ========================================================================== */
+.archive-shell {
+  max-width: 960px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 20px 18px 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   상단 헤더 (호버 시 한글 → 영문 교체 & 파란색 전환, 빨간 바 제거)
+   ========================================================================== */
+.site-header {
+  margin-bottom: 24px;
+}
+
+.header-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 2px 10px;
+}
+
+/* 호버 시 한글(.text-ko)이 숨겨지고 영문(.text-en)이 파란색으로 나타나는 공통 스타일 */
+.swap-text-btn {
+  display: inline-grid;
+  align-items: center;
+  color: var(--text-black);
+  text-decoration: none;
+}
+
+.swap-text-btn .text-ko,
+.swap-text-btn .text-en {
+  grid-area: 1 / 1;
+}
+
+.swap-text-btn .text-en {
+  visibility: hidden;
+}
+
+.swap-text-btn:hover {
+  color: var(--link-blue);
+  text-decoration: none;
+}
+
+.swap-text-btn:hover .text-ko {
+  visibility: hidden;
+}
+
+.swap-text-btn:hover .text-en {
+  visibility: visible;
+  color: var(--link-blue);
+}
+
+/* 좌측 홈 이동 로고 ('류호범' ↔ 'RYU HOBEOM') */
+.brand-title {
+  font-size: 15px;
+  font-weight: bold;
+  justify-items: start;
+}
+
+/* 우측 내비게이션 ('작가소개 / 작업 / 연락' ↔ 'About / Works / Contact') */
+.top-nav {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.nav-item {
+  padding: 0 3px;
+  font-size: 13px;
+  justify-items: center;
+}
+
+.nav-item.is-active .text-ko,
+.nav-item.is-active .text-en {
+  font-weight: bold;
+}
+
+.nav-slash {
+  color: var(--text-gray);
+  font-size: 12px;
+  user-select: none;
+}
+
+.header-rule {
+  width: 100%;
+  height: 1px;
+  background-color: var(--line-header);
+}
+
+/* ==========================================================================
+   공통 심플 2단 레이아웃
+   ========================================================================== */
+.simple-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line-light);
+}
+
+.simple-col-heading {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--text-black);
+  margin-bottom: 8px;
+}
+
+.archive-caption-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text-gray);
+}
+
+.caption-right-link {
+  font-size: 11px;
+  color: var(--link-blue);
+}
+
+.caption-right-link:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   뷰 전환 컨테이너
+   ========================================================================== */
+.views-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.view-section {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.view-section.is-active {
+  display: flex;
+}
+
+/* ==========================================================================
+   1. [메인 화면] 대표 작업 이미지 + 현재 전시 / 예정 전시
+   ========================================================================== */
+.hero-card {
+  width: 100%;
+  background-color: #000000;
+  cursor: pointer;
+  aspect-ratio: 21 / 9;
+  max-height: 400px;
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.exhibition-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.exhibition-list li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.exh-title {
+  color: var(--text-black);
+}
+
+.exh-meta {
+  color: var(--text-gray);
+  font-size: 11px;
+}
+
+/* ==========================================================================
+   2. [세부화면 1: 작가소개 (ABOUT)]
+   ========================================================================== */
+.about-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.about-photo-card {
+  width: 100%;
+  background-color: #f7f7f7;
+}
+
+.about-photo {
+  width: 100%;
+  height: auto;
+  max-height: 330px;
+  object-fit: contain;
+}
+
+.content-artist-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-black);
+  margin-bottom: 10px;
+}
+
+.content-artist-title .pipe {
+  font-weight: normal;
+  color: var(--text-gray);
+  margin: 0 4px;
+}
+
+.about-statement {
+  margin-bottom: 18px;
+}
+
+.about-statement p {
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--text-black);
+  word-break: keep-all;
+  margin-bottom: 8px;
+}
+
+.about-statement p:last-child {
+  margin-bottom: 0;
+}
+
+.about-statement p.statement-en {
+  font-size: 12px;
+  color: var(--text-gray);
+  margin-bottom: 8px;
+}
+
+.about-statement p.statement-en:first-of-type {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-light);
+}
+
+.about-cv {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line-light);
+}
+
+.cv-section-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--text-black);
+  margin-bottom: 4px;
+}
+
+.cv-archive-table {
+  width: 100%;
+  font-size: 12px;
+}
+
+.cv-archive-table th {
+  color: var(--text-gray);
+  font-weight: normal;
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+  padding: 2px 14px 2px 0;
+  width: 155px;
+}
+
+.cv-archive-table td {
+  color: var(--text-black);
+  vertical-align: top;
+  padding: 2px 0;
+  word-break: keep-all;
+}
+
+/* ==========================================================================
+   3-A. [세부화면 2: 작업 — 대표 이미지 타일 그리드 화면 (#worksGridSubView)]
+   ========================================================================== */
+.works-grid-subview {
+  width: 100%;
+}
+
+.works-tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px 20px;
+}
+
+.work-tile-card {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  cursor: pointer;
+}
+
+.work-tile-thumb-wrap {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: #000000;
+  overflow: hidden;
+  margin-bottom: 7px;
+}
+
+.work-tile-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.2s ease;
+}
+
+.work-tile-card:hover .work-tile-thumb {
+  opacity: 0.86;
+}
+
+.work-tile-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--text-black);
+  margin-bottom: 1px;
+}
+
+.work-tile-card:hover .work-tile-title {
+  color: var(--link-blue);
+  text-decoration: underline;
+}
+
+.work-tile-meta {
+  font-size: 11px;
+  color: var(--text-gray);
+}
+
+/* ==========================================================================
+   3-B. [세부화면 2: 작업 — 개별 작업 상세 화면 (#worksDetailSubView)]
+   ========================================================================== */
+.works-detail-topbar {
+  margin-bottom: 12px;
+}
+
+.back-to-tiles-btn {
+  font-size: 11px;
+  color: var(--link-blue);
+}
+
+.back-to-tiles-btn:hover {
+  text-decoration: underline;
+}
+
+.works-top-layout {
+  display: grid;
+  grid-template-columns: 1fr 310px;
+  gap: 28px;
+  align-items: start;
+}
+
+.work-main-stage {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 430px;
+  background-color: #000000;
+  overflow: hidden;
+  position: relative;
+}
+
+.work-main-stage img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: #000000;
+  cursor: pointer;
+}
+
+.work-main-stage iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* 이미지 하단 3단 캡션 바 (#hife-lp-ibt 스타일) */
+.archive-ibt-table {
+  width: 100%;
+  margin-top: 6px;
+  font-size: 11px;
+}
+
+.archive-ibt-table td {
+  vertical-align: top;
+  padding: 0;
+}
+
+.ibt-left {
+  color: var(--text-gray);
+  text-align: left;
+}
+
+.ibt-center {
+  color: var(--text-gray);
+  text-align: center;
+}
+
+.ibt-right {
+  text-align: right;
+}
+
+.ibt-action-link {
+  font-size: 11px;
+  color: var(--link-blue);
+  margin-left: 8px;
+}
+
+.ibt-action-link:hover {
+  text-decoration: underline;
+}
+
+/* 우측 사이드바 (#ltable + #hife-lp-ris 구조) */
+.work-info-panel {
+  font-size: 12px;
+}
+
+.work-meta-lines {
+  margin-bottom: 12px;
+}
+
+.work-primary-meta {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--text-black);
+  margin-bottom: 2px;
+}
+
+.work-secondary-meta {
+  font-size: 12px;
+  color: var(--text-gray);
+  word-break: keep-all;
+}
+
+/* LIFE Archive #ltable 사양 표 */
+.archive-spec-table {
+  width: 100%;
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+
+.archive-spec-table th {
+  color: var(--text-gray);
+  font-weight: normal;
+  white-space: nowrap;
+  padding: 3px 10px 0 0;
+  text-align: left;
+  vertical-align: top;
+}
+
+.archive-spec-table td {
+  color: var(--text-black);
+  padding: 3px 0 0 0;
+  text-align: left;
+  vertical-align: top;
+  word-break: keep-all;
+}
+
+/* 정사각형 썸네일 리스트 (#hife-lp-ris 스타일) */
+.related-works-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.smallhead {
+  font-size: 11px;
+  color: var(--text-gray);
+}
+
+.work-step-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.step-arrow-btn {
+  font-size: 11px;
+  color: var(--link-blue);
+}
+
+.step-arrow-btn:hover {
+  text-decoration: underline;
+}
+
+.work-thumbs-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.work-thumb-item {
+  width: 56px;
+  height: 56px;
+  border: 1px solid transparent;
+  padding: 0;
+  background-color: #000000;
+  cursor: pointer;
+  opacity: 0.78;
+  transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.work-thumb-item:hover {
+  opacity: 1;
+}
+
+.work-thumb-item.is-selected {
+  opacity: 1;
+  border-color: var(--life-red);
+}
+
+.work-thumb-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 하단 2단: *작업 설명 / *Work Description */
+.work-note-body {
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--text-black);
+  word-break: keep-all;
+  white-space: pre-line;
+}
+
+.work-note-body.en {
+  color: var(--text-gray);
+}
+
+/* ==========================================================================
+   4. [세부화면 3: 연락 (CONTACT)]
+   ========================================================================== */
+.contact-center-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  text-align: center;
+}
+
+.contact-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-black);
+}
+
+.contact-info-list li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.contact-label {
+  color: var(--text-gray);
+}
+
+.contact-value {
+  color: var(--text-black);
+}
+
+.contact-value:hover {
+  color: var(--link-blue);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   하단 심플 푸터
+   ========================================================================== */
+.archive-footer {
+  margin-top: 32px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.footer-row {
+  text-align: center;
+}
+
+/* ==========================================================================
+   고화질 원본 전체화면 뷰어
+   ========================================================================== */
+.lightbox-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-modal.is-open {
+  display: flex;
+}
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.96);
+}
+
+.lightbox-content {
+  position: relative;
+  z-index: 1;
+  max-width: 94vw;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.lightbox-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: var(--text-black);
+}
+
+.lightbox-close {
+  color: var(--link-blue);
+  font-size: 12px;
+}
+
+.lightbox-close:hover {
+  text-decoration: underline;
+}
+
+.lightbox-img {
+  max-width: 94vw;
+  max-height: 84vh;
+  object-fit: contain;
+  background-color: #000000;
+}
+
+/* ==========================================================================
+   반응형 미디어 쿼리 (모바일 & 태블릿)
+   ========================================================================== */
+@media (max-width: 780px) {
+  .about-layout,
+  .works-top-layout,
+  .simple-two-col {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .works-tiles-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero-card {
+    aspect-ratio: 16 / 10;
+  }
+}
+
+@media (max-width: 520px) {
+  .works-tiles-grid {
+    grid-template-columns: 1fr;
+  }
+}

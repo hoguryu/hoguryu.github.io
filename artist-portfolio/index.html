@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- [수정 가이드] 브라우저 탭 제목 -->
+  <title>류호범 | RYU HOBEOM</title>
+  <meta name="description" content="현대미술 작가 류호범(Ryu HoBeom) 공식 아카이브 및 포트폴리오 웹사이트" />
+
+  <!-- 웹폰트 로드 (Pretendard & Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+  <!-- 스타일시트 연결 -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="archive-shell">
+
+    <!-- ===================================================================
+         상단 헤더
+         - 좌측: 기본 '류호범' 표시 → 마우스 커서를 올리면 파란색 'RYU HOBEOM'으로 변환 (클릭 시 홈 이동)
+         - 우측: 기본 '작가소개 / 작업 / 연락' → 마우스 커서를 올리면 파란색 'About / Works / Contact'로 변환
+         =================================================================== -->
+    <header class="site-header" id="siteHeader">
+      <div class="header-row">
+        <a href="#home" class="brand-title swap-text-btn" data-target="home" aria-label="메인 화면으로 이동">
+          <span class="text-ko">류호범</span>
+          <span class="text-en">RYU HOBEOM</span>
+        </a>
+
+        <nav class="top-nav" aria-label="주요 메뉴">
+          <button type="button" class="nav-item swap-text-btn" data-target="about">
+            <span class="text-ko">작가소개</span>
+            <span class="text-en">About</span>
+          </button>
+          <span class="nav-slash" aria-hidden="true">/</span>
+          <button type="button" class="nav-item swap-text-btn" data-target="works">
+            <span class="text-ko">작업</span>
+            <span class="text-en">Works</span>
+          </button>
+          <span class="nav-slash" aria-hidden="true">/</span>
+          <button type="button" class="nav-item swap-text-btn" data-target="contact">
+            <span class="text-ko">연락</span>
+            <span class="text-en">Contact</span>
+          </button>
+        </nav>
+      </div>
+      <div class="header-rule"></div>
+    </header>
+
+    <!-- ===================================================================
+         메인 뷰 컨테이너
+         - 1. 메인 화면 (#view-home)
+         - 2. 세부화면 1: 작가소개 (#view-about)
+         - 3. 세부화면 2: 작업 (#view-works: 타일 그리드 목록 ↔ 작업 상세 화면)
+         - 4. 세부화면 3: 연락 (#view-contact)
+         =================================================================== -->
+    <main class="views-container">
+
+      <!-- =================================================================
+           1. [메인 화면] 대표 작업 와이드 이미지 + 현재 전시 / 예정 전시
+           ================================================================= -->
+      <section id="view-home" class="view-section is-active" aria-label="메인 화면">
+        <div class="hero-archive-frame">
+          <div class="hero-card" id="heroBannerCard" role="button" tabindex="0" aria-label="작업 화면으로 이동">
+            <img
+              src="./images/work01.jpg"
+              alt="류호범 대표 설치 작업 전경"
+              class="hero-image"
+              id="heroBannerImage"
+            />
+          </div>
+          <div class="archive-caption-bar">
+            <span class="caption-left">© 류호범 (Ryu HoBeom)</span>
+            <span class="caption-center" id="heroCaptionCenter">《마모되는 윤곽선》, 2026. 6</span>
+            <button type="button" class="caption-right-link" id="heroGoWorksBtn">
+              View Works →
+            </button>
+          </div>
+        </div>
+
+        <!-- 하단 2단: 현재 전시(Current Exhibitions) / 예정 전시(Upcoming Exhibitions) -->
+        <div class="simple-two-col home-exhibitions-grid">
+          <div class="simple-col-block">
+            <h2 class="simple-col-heading">현재 전시(Current Exhibitions)</h2>
+            <ul class="exhibition-list" id="currentExhibitionsList"></ul>
+          </div>
+
+          <div class="simple-col-block">
+            <h2 class="simple-col-heading">예정 전시(Upcoming Exhibitions)</h2>
+            <ul class="exhibition-list" id="upcomingExhibitionsList"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           2. [세부화면 1: 작가소개 (ABOUT)]
+           - 좌측: 프로필 사진 (./images/profile.jpg)
+           - 우측: 류호범 | Ryu HoBeom + 작가 소개글 + 시간순 연력(CV)
+           ================================================================= -->
+      <section id="view-about" class="view-section" aria-label="작가소개">
+        <div class="about-layout">
+          <div class="about-photo-wrapper">
+            <div class="about-photo-card">
+              <img
+                src="./images/profile.jpg"
+                alt="류호범 작가 프로필 사진"
+                class="about-photo"
+                id="aboutProfileImg"
+              />
+            </div>
+          </div>
+
+          <div class="about-content">
+            <h1 class="content-artist-title">류호범 <span class="pipe">|</span> Ryu HoBeom</h1>
+            <div class="about-statement" id="aboutStatementBox"></div>
+            <div class="about-cv" id="aboutCvBox"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           3. [세부화면 2: 작업 (WORKS)]
+           - (A) 작업 타일 목록 화면 (#worksGridSubView): 작업 목차 클릭 시 대표 이미지가 타일로 나열됨
+           - (B) 작업 상세 화면 (#worksDetailSubView): 타일 클릭 시 이동하는 상세 화면
+           ================================================================= -->
+      <section id="view-works" class="view-section" aria-label="작업">
+
+        <!-- (A) 작업 대표 이미지 타일 그리드 화면 -->
+        <div id="worksGridSubView" class="works-grid-subview">
+          <div class="works-tiles-grid" id="worksTilesGrid" aria-label="작업 목록 타일">
+            <!-- script.js에서 각 작업의 대표 이미지가 타일 형태로 자동 생성됩니다 -->
+          </div>
+        </div>
+
+        <!-- (B) 개별 작업 상세 화면 (타일 클릭 시 표시) -->
+        <div id="worksDetailSubView" class="works-detail-subview" hidden>
+          <div class="works-detail-topbar">
+            <button type="button" class="back-to-tiles-btn" id="backToTilesBtn">
+              ← 작업 목록으로 (Back to Works)
+            </button>
+          </div>
+
+          <div class="works-top-layout">
+            <!-- 좌측: 작업 이미지/영상 뷰어 -->
+            <div class="work-stage-wrap">
+              <div class="work-frame-box">
+                <div class="work-main-stage" id="workMainStage"></div>
+
+                <!-- 이미지 하단 3단 캡션 바 (#hife-lp-ibt 스타일) -->
+                <table class="archive-ibt-table" aria-label="작품 뷰어 컨트롤 바">
+                  <tbody>
+                    <tr>
+                      <td class="ibt-left" id="stageCopyright">© 류호범</td>
+                      <td class="ibt-center" id="stageCounter">01 / 05</td>
+                      <td class="ibt-right">
+                        <button type="button" class="ibt-action-link" id="toggleVideoBtn" hidden>
+                          ▶ Video
+                        </button>
+                        <button type="button" class="ibt-action-link" id="openLightboxBtn">
+                          View full size ↗
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 우측: 작품 메타데이터 & 스펙 테이블(#ltable) & 해당 작업의 이미지 썸네일들(#hife-lp-ris) -->
+            <div class="work-info-panel">
+              <h1 class="content-artist-title">류호범 <span class="pipe">|</span> Ryu HoBeom</h1>
+
+              <div class="work-meta-lines">
+                <p class="work-primary-meta" id="workPrimaryMeta"></p>
+                <p class="work-secondary-meta" id="workSecondaryMeta"></p>
+              </div>
+
+              <table class="archive-spec-table" id="workSpecTable" aria-label="작업 상세 사양">
+                <tbody>
+                  <tr>
+                    <th>Title:</th>
+                    <td id="specTitle">-</td>
+                  </tr>
+                  <tr>
+                    <th>Date:</th>
+                    <td id="specYear">-</td>
+                  </tr>
+                  <tr>
+                    <th>Medium:</th>
+                    <td id="specMedium">-</td>
+                  </tr>
+                  <tr>
+                    <th>Size:</th>
+                    <td id="specDimensions">-</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="related-works-block">
+                <div class="related-works-header">
+                  <span class="smallhead">Images:</span>
+                  <div class="work-step-btns">
+                    <button type="button" class="step-arrow-btn" id="prevImgBtn" aria-label="이전 사진">← Prev</button>
+                    <button type="button" class="step-arrow-btn" id="nextImgBtn" aria-label="다음 사진">Next →</button>
+                  </div>
+                </div>
+                <div class="work-thumbs-row" id="workThumbsRow" role="listbox" aria-label="작품 상세 이미지 선택">
+                  <!-- 선택된 작업에 속한 사진 썸네일들이 렌더링됩니다 -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 하단 2단: *작업 설명 / *Work Description -->
+          <div class="simple-two-col works-notes-grid">
+            <div class="simple-col-block">
+              <h2 class="simple-col-heading">*작업 설명</h2>
+              <p class="work-note-body" id="workNoteKo"></p>
+            </div>
+
+            <div class="simple-col-block">
+              <h2 class="simple-col-heading">*Work Description</h2>
+              <p class="work-note-body en" id="workNoteEn"></p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- =================================================================
+           4. [세부화면 3: 연락 (CONTACT)]
+           ================================================================= -->
+      <section id="view-contact" class="view-section" aria-label="연락">
+        <div class="contact-center-box">
+          <ul class="contact-info-list" id="contactInfoList">
+            <li>
+              <span class="contact-label">이메일:</span>
+              <a href="mailto:hogu38295@gmail.com" class="contact-value" id="contactEmail">hogu38295@gmail.com</a>
+            </li>
+            <li>
+              <span class="contact-label">전화번호:</span>
+              <a href="tel:010-6444-3142" class="contact-value" id="contactPhone">010-6444-3142</a>
+            </li>
+            <li>
+              <span class="contact-label">인스타그램:</span>
+              <a href="https://instagram.com/hoguwart_" target="_blank" rel="noopener noreferrer" class="contact-value" id="contactInsta">@hoguwart_</a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 하단 심플 푸터 -->
+    <footer class="archive-footer">
+      <div class="footer-row">
+        <span>© 2026 류호범 (Ryu HoBeom)</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- =====================================================================
+       고화질 원본 전체화면 모달 (View full size 클릭 시 실행)
+       ===================================================================== -->
+  <div class="lightbox-modal" id="lightboxModal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="고화질 원본 이미지 보기">
+    <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
+    <div class="lightbox-content">
+      <div class="lightbox-topbar">
+        <span class="lightbox-caption" id="lightboxCaption"></span>
+        <button type="button" class="lightbox-close" id="lightboxCloseBtn" aria-label="닫기">← 돌아가기 (Close ✕)</button>
+      </div>
+      <img src="" alt="" class="lightbox-img" id="lightboxImg" />
+    </div>
+  </div>
+
+  <!-- 자바스크립트 연결 -->
+  <script src="script.js"></script>
+</body>
+</html>
